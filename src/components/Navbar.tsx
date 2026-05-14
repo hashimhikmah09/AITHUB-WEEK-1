@@ -7,6 +7,7 @@ import { Menu, X, Sun } from "lucide-react"; // Icons for branding and mobile
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false); // State for dashboard dropdown
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
@@ -21,6 +22,43 @@ export default function Navbar() {
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
           <Link href="/" className="hover:text-yellow-500 transition-colors">Home</Link>
+          <Link href="/company/123" className="hover:text-yellow-500 transition-colors">Companies</Link>
+  
+           <div className="relative">
+
+          {/* DROPDOWN BUTTON */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="hover:text-green-600 transition flex items-center gap-1"
+          >
+            Dashboard
+            <span className="text-xs">▼</span>
+          </button>
+            {/* DROPDOWN MENU */}
+          {open && (
+            <div className="absolute right-0 mt-3 w-52 bg-white border rounded-xl shadow-lg overflow-hidden z-50">
+
+              {/* CUSTOMER DASHBOARD */}
+              <Link
+                href="/dashboard"
+                className="block px-4 py-3 hover:bg-gray-100 transition"
+                onClick={() => setOpen(false)}
+              >
+                👤 Customer Dashboard
+              </Link>
+
+              {/* ADMIN DASHBOARD */}
+              <Link
+                href="/admin/dashboard"
+                className="block px-4 py-3 hover:bg-gray-100 transition"
+                onClick={() => setOpen(false)}
+              >
+                🏢 Admin Dashboard
+              </Link>
+
+            </div>
+          )}
+        </div>
           <Link href="/explore" className="hover:text-yellow-500 transition-colors">Explore</Link>
           <Link 
             href="/register" 

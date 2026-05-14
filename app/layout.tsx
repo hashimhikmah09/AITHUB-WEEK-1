@@ -21,10 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* Deliverable #2: Sticky Navigation placed here so it stays on top of every page */}
-        <Navbar />
+        
         
         {/* This "children" represents the content of whatever page you are visiting */}
         <main>{children}</main>
+        
 
         {/* Global popup notifications */}
         <Toaster position="top-center" />

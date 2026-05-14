@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { mockCompanies, Company } from "@/src/services/mockData";
 import CompanyCard from "@/src/components/companyCard";
 import { Search, SlidersHorizontal } from "lucide-react";
+import Navbar from "@/src/components/Navbar";
 
 /**
  * ============================================
@@ -50,11 +51,12 @@ export default function ExplorePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
+      <Navbar />
 
       {/* ============================================
           HEADER SECTION
       ============================================ */}
-      <header className="mb-12">
+      <header className="mb-12 mt-10">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
           Explore Solar Partners
         </h1>
