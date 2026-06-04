@@ -1,0 +1,17 @@
+{
+  "nav.home": "Home",
+  "nav.companies": "Companies",
+  "nav.compare": "Compare",
+
+  "hero.title": "Find Trusted Solar Companies",
+  "hero.subtitle": "Compare installers and choose the best option",
+
+  "form.location": "Location",
+  "form.service": "Service",
+  "form.rating": "Minimum Rating",
+
+  "errors.required": "This field is required",
+
+  "buttons.compare": "Compare",
+  "buttons.remove": "Remove from Compare"
+}

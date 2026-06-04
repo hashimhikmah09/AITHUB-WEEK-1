@@ -1,34 +1,36 @@
-// src/app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Google font for professional typography
-import "./globals.css";
-import Navbar from "@/src/components/Navbar"; // We will create this in the next step
-import { Toaster } from "react-hot-toast"; // For those success/error popups
 
-const inter = Inter({ subsets: ["latin"] });
+import { Inter } from "next/font/google";
+
+import "./globals.css";
+
+import { Toaster } from "react-hot-toast";
+
+import Providers from "@/src/components/Providers";
+
+const inter = Inter({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: "SolarLink | Connect with Solar Experts",
-  description: "The premier marketplace for solar energy solutions.",
+  title: "SolarLink",
+  description:
+    "Solar company comparison platform",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* Deliverable #2: Sticky Navigation placed here so it stays on top of every page */}
-        
-        
-        {/* This "children" represents the content of whatever page you are visiting */}
-        <main>{children}</main>
-        
+        <Providers>
+          {children}
 
-        {/* Global popup notifications */}
-        <Toaster position="top-center" />
+          <Toaster position="top-right" />
+        </Providers>
       </body>
     </html>
   );

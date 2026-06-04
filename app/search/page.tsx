@@ -1,58 +1,127 @@
 "use client";
 
-import { useState } from "react";
-import SearchFilters from "@/src/components/Filters/filterBar";
+import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
+
+import FilterBar from "@/src/components/Filters/filterBar";
+import CompanyCard from "@/src/components/companyCard";
+import { companies } from "@/src/lib/companies";
+
 import { List, Map as MapIcon } from "lucide-react";
 
-// Dynamically import MapView to avoid SSR issues with Leaflet
-const MapView = dynamic(() => import("@/src/components/Map/mapview"), { ssr: false });
+const MapView = dynamic(
+  () => import("@/src/components/Map/mapview"),
+  { ssr: false }
+);
 
 export default function SearchPage() {
+  const searchParams = useSearchParams();
+
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
-  // Mock data - In a real app, this would come from an API based on searchParams
-  const filteredCompanies = [
-    { id: 1, name: "SolarTech Nigeria", lat: 6.5244, lng: 3.3792, serviceType: "Installation" },
-    { id: 2, name: "EcoEnergy Ltd", lat: 6.6018, lng: 3.3515, serviceType: "Maintenance" },
-  ];
+  const filters = {
+    location: searchParams.get("location") || "",
+    service: searchParams.get("service") || "",
+    rating: Number(searchParams.get("rating")) || 0,
+    budget: Number(searchParams.get("budget")) || Infinity,
+    responseTime:
+      Number(searchParams.get("responseTime")) || Infinity,
+  };
+
+  const filteredCompanies = useMemo(() => {
+    return companies.filter((company) => {
+      return (
+        (!filters.location ||
+          company.location
+            .toLowerCase()
+            .includes(filters.location.toLowerCase())) &&
+
+        (!filters.service ||
+          company.service === filters.service) &&
+
+        company.rating >= filters.rating &&
+        company.budget <= filters.budget &&
+        company.responseTime <= filters.responseTime
+      );
+    });
+  }, [filters]);
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Find Solar Installers</h1>
-        <div className="flex bg-white border rounded-lg p-1">
-          <button 
-            onClick={() => setViewMode("list")}
-            className={`p-2 rounded-md ${viewMode === "list" ? "bg-gray-100 text-yellow-600" : "text-gray-400"}`}
-          >
-            <List size={20} />
-          </button>
-          <button 
-            onClick={() => setViewMode("map")}
-            className={`p-2 rounded-md ${viewMode === "map" ? "bg-gray-100 text-yellow-600" : "text-gray-400"}`}
-          >
-            <MapIcon size={20} />
-          </button>
+    <div className="min-h-screen bg-gray-50">
+
+      {/* NAVBAR */}
+      <div className="bg-white border-b sticky top-0 z-50">
+
+        <div className="max-w-7xl mx-auto px-6 py-5">
+
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+
+            {/* LEFT */}
+            <div>
+              <h1 className="text-3xl font-bold">
+                Find Solar Companies
+              </h1>
+
+              <p className="text-gray-500 mt-1">
+                Search verified solar providers near you
+              </p>
+            </div>
+
+            {/* TOGGLE */}
+            <div className="flex border rounded-xl p-1 bg-gray-50 w-fit">
+
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-3 rounded-lg transition ${
+                  viewMode === "list"
+                    ? "bg-yellow-100 text-yellow-600"
+                    : "text-gray-400"
+                }`}
+              >
+                <List size={20} />
+              </button>
+
+              <button
+                onClick={() => setViewMode("map")}
+                className={`p-3 rounded-lg transition ${
+                  viewMode === "map"
+                    ? "bg-yellow-100 text-yellow-600"
+                    : "text-gray-400"
+                }`}
+              >
+                <MapIcon size={20} />
+              </button>
+
+            </div>
+          </div>
+
+          {/* FILTERS */}
+          <div className="mt-6">
+            <FilterBar />
+          </div>
+
         </div>
       </div>
 
-      <SearchFilters />
+      {/* CONTENT */}
+      <div className="max-w-7xl mx-auto p-6">
 
-      <div className="mt-8">
         {viewMode === "list" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Map through company cards here */}
-            {filteredCompanies.map(c => (
-              <div key={c.id} className="p-4 bg-white border rounded-xl shadow-sm">
-                <h3 className="font-bold">{c.name}</h3>
-                <p className="text-sm text-gray-500">{c.serviceType}</p>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+            {filteredCompanies.map((company) => (
+              <CompanyCard
+                key={company.id}
+                company={company}
+              />
             ))}
+
           </div>
         ) : (
           <MapView companies={filteredCompanies} />
         )}
+
       </div>
     </div>
   );

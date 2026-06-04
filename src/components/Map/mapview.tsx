@@ -1,32 +1,63 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+} from "react-leaflet";
 
-// Fix for default marker icons in Next.js
-const icon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
-});
+type Company = {
+  id: number;
+  name: string;
+  lat: number;
+  lng: number;
+  serviceType: string;
+};
 
-export default function MapView({ companies }: { companies: any[] }) {
+export default function MapView({
+  companies,
+}: {
+  companies: Company[];
+}) {
   return (
-    <div className="h-[600px] w-full rounded-2xl overflow-hidden border shadow-inner">
-      <MapContainer center={[6.5244, 3.3792]} zoom={11} style={{ height: "100%", width: "100%" }}>
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+    <div className="w-full h-[600px] rounded-2xl overflow-hidden border">
+
+      <MapContainer
+        center={[6.5244, 3.3792]}
+        zoom={11}
+        scrollWheelZoom={true}
+        className="w-full h-full"
+      >
+
+        {/* Type definitions for react-leaflet may not include the attribution prop in some setups; ignore TS here */}
+        {/* @ts-ignore */}
+        <TileLayer
+          attribution="&copy; OpenStreetMap contributors"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
         {companies.map((company) => (
-          <Marker key={company.id} position={[company.lat, company.lng]} icon={icon}>
+          <Marker
+            key={company.id}
+            position={[company.lat, company.lng]}
+          >
             <Popup>
-              <div className="p-1">
-                <h3 className="font-bold">{company.name}</h3>
-                <p className="text-xs text-gray-500">{company.serviceType}</p>
-                <button className="mt-2 text-xs text-yellow-600 font-bold">View Profile</button>
+              <div>
+                <h2 className="font-bold">
+                  {company.name}
+                </h2>
+
+                <p>
+                  {company.serviceType}
+                </p>
               </div>
             </Popup>
           </Marker>
         ))}
+
       </MapContainer>
+
     </div>
   );
 }

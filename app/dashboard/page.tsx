@@ -21,6 +21,8 @@ import {
   Sun,
 } from "lucide-react";
 
+
+
 // ======================================================
 // CUSTOMER DASHBOARD (FULL PROFESSIONAL UI)
 // FEATURES:
@@ -71,6 +73,15 @@ const quotes = [
     status: "Installed" as QuoteStatus,
   },
 ];
+
+
+const navItems = [
+  { id: "overview", label: "Overview", icon: <LayoutDashboard size={22} /> },
+  { id: "quotes", label: "Quotes", icon: <FileText size={22} /> },
+  { id: "companies", label: "Companies", icon: <Building2 size={22} /> },
+  { id: "notifications", label: "Notifications", icon: <Bell size={22} /> },
+];
+
 
 const savedCompanies = [
   {
@@ -211,25 +222,28 @@ export default function CustomerDashboard() {
           />
         )}
 
-       <aside
+      
+<aside
   className="
     bg-white shadow-lg min-h-screen
-    w-16 md:w-64
+    w-64
     transition-all duration-300
     flex flex-col
+    border-r border-gray-100
   "
 >
-  <div className="flex flex-col h-full overflow-hidden">
+  <div className="flex flex-col h-full">
+    
     {/* DASHBOARD HEADER */}
-    <div className="flex items-center justify-center md:justify-start gap-3 p-4 border-b">
+    {/* <div className="flex items-center justify-center sm:justify-start gap-3 p-4 border-b">
       <LayoutDashboard className="text-green-600 shrink-0" size={24} />
-      <h2 className="hidden md:block font-bold text-lg whitespace-nowrap">
+      <h2 className="hidden sm:block font-bold text-lg text-gray-800 whitespace-nowrap">
         Dashboard
       </h2>
-    </div>
+    </div> */}
 
     {/* NAVIGATION */}
-    <nav className="p-2 md:p-4 space-y-2">
+    <nav className="p-2 sm:p-4 space-y-2 flex-1">
       <SidebarItem icon={<LayoutDashboard size={22} />} label="Overview" />
       <SidebarItem icon={<FileText size={22} />} label="Quotes" />
       <SidebarItem icon={<Building2 size={22} />} label="Companies" />
@@ -237,12 +251,6 @@ export default function CustomerDashboard() {
       
       <div className="border-t my-4 opacity-50" />
       
-      <Link href="/">
-        <button className="flex items-center justify-center md:justify-start gap-3 p-3 rounded-xl w-full text-red-500 hover:bg-red-50 transition-colors group">
-          <Sun size={22} className="shrink-0" />
-          <span className="hidden md:block text-sm font-medium">Back Home</span>
-        </button>
-      </Link>
     </nav>
   </div>
 </aside>
@@ -620,6 +628,7 @@ export default function CustomerDashboard() {
   );
 }
 
+
 function SidebarItem({
   icon,
   label,
@@ -627,10 +636,11 @@ function SidebarItem({
   icon: React.ReactNode;
   label: string;
 }) {
+  console.log(label);
   return (
     <button
       className="
-        flex items-center
+        flex items-center gap-3
         w-full
         px-3 py-3
         rounded-xl
@@ -644,8 +654,8 @@ function SidebarItem({
         {icon}
       </div>
 
-      {/* LABEL ONLY ON DESKTOP */}
-      <span className="ml-3 hidden md:block text-sm font-medium whitespace-nowrap">
+      {/* LABEL: Changed md:inline to sm:inline */}
+      <span className="ml-3 text-sm font-medium whitespace-nowrap">
         {label}
       </span>
     </button>

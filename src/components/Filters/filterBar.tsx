@@ -1,65 +1,75 @@
 "use client";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Search, MapPin, DollarSign, Star, Clock } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function SearchFilters() {
+export default function FilterBar() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const updateFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (value) params.set(key, value);
-    else params.delete(key);
-    router.push(`${pathname}?${params.toString()}`);
+
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+
+    router.push(`/search?${params.toString()}`);
   };
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow-sm border flex flex-wrap gap-4 items-center">
-      {/* Location Filter */}
-      <div className="flex items-center gap-2 border-r pr-4">
-        <MapPin size={18} className="text-gray-400" />
-        <select 
-          className="bg-transparent text-sm font-medium focus:outline-none"
-          onChange={(e) => updateFilter("location", e.target.value)}
-          defaultValue={searchParams.get("location") || ""}
-        >
-          <option value="">All Locations</option>
-          <option value="lagos">Lagos</option>
-          <option value="abuja">Abuja</option>
-          <option value="portharcourt">Port Harcourt</option>
-        </select>
-      </div>
+    <div className="bg-white p-4 rounded-2xl shadow-sm grid md:grid-cols-5 gap-4">
 
-      {/* Budget Range */}
-      <div className="flex items-center gap-2 border-r pr-4">
-        <DollarSign size={18} className="text-gray-400" />
-        <select 
-          className="bg-transparent text-sm font-medium focus:outline-none"
-          onChange={(e) => updateFilter("budget", e.target.value)}
-          defaultValue={searchParams.get("budget") || ""}
-        >
-          <option value="">Budget Range</option>
-          <option value="0-500k">Under ₦500k</option>
-          <option value="500k-2m">₦500k - ₦2M</option>
-          <option value="2m+">Over ₦2M</option>
-        </select>
-      </div>
+      <input
+        placeholder="Location"
+        className="border rounded-xl p-3"
+        onChange={(e) =>
+          updateFilter("location", e.target.value)
+        }
+      />
 
-      {/* Rating */}
-      <div className="flex items-center gap-2">
-        <Star size={18} className="text-gray-400" />
-        <select 
-          className="bg-transparent text-sm font-medium focus:outline-none"
-          onChange={(e) => updateFilter("rating", e.target.value)}
-          defaultValue={searchParams.get("rating") || ""}
-        >
-          <option value="">Any Rating</option>
-          <option value="4">4+ Stars</option>
-          <option value="4.5">4.5+ Stars</option>
-        </select>
-      </div>
+      <select
+        className="border rounded-xl p-3"
+        onChange={(e) =>
+          updateFilter("service", e.target.value)
+        }
+      >
+        <option value="">Service Type</option>
+        <option value="Installation">
+          Installation
+        </option>
+        <option value="Maintenance">
+          Maintenance
+        </option>
+      </select>
+
+      <input
+        type="number"
+        placeholder="Minimum Rating"
+        className="border rounded-xl p-3"
+        onChange={(e) =>
+          updateFilter("rating", e.target.value)
+        }
+      />
+
+      <input
+        type="number"
+        placeholder="Budget"
+        className="border rounded-xl p-3"
+        onChange={(e) =>
+          updateFilter("budget", e.target.value)
+        }
+      />
+
+      <input
+        type="number"
+        placeholder="Response Time"
+        className="border rounded-xl p-3"
+        onChange={(e) =>
+          updateFilter("responseTime", e.target.value)
+        }
+      />
     </div>
   );
 }

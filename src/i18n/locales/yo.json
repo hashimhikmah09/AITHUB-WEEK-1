@@ -1,0 +1,17 @@
+{
+  "nav.home": "Ile",
+  "nav.companies": "Awọn Ile-iṣẹ",
+  "nav.compare": "Fiwera",
+
+  "hero.title": "Wa Awọn Ile-iṣẹ Solar To Dara",
+  "hero.subtitle": "Fiwera awọn amọja ki o yan eyi to dara julọ",
+
+  "form.location": "Ipo",
+  "form.service": "Iṣẹ",
+  "form.rating": "Iwọn Didara Kere",
+
+  "errors.required": "Aaye yii jẹ dandan",
+
+  "buttons.compare": "Fiwera",
+  "buttons.remove": "Yọ kuro ninu afiwe"
+}
